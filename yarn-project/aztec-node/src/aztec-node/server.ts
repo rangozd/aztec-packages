@@ -352,6 +352,14 @@ export class AztecNodeService implements AztecNode, AztecNodeAdmin, Traceable {
       log.info('Starting in prover-only mode: skipping validator, sequencer, sentinel, and slasher subsystems');
     }
 
+    const globalVariableBuilder = new GlobalVariableBuilder(dateProvider, publicClient, {
+      l1Contracts: config.l1Contracts,
+      ethereumSlotDuration: config.ethereumSlotDuration,
+      rollupVersion: BigInt(config.rollupVersion),
+      l1GenesisTime,
+      slotDuration: Number(slotDuration),
+    });
+
     // create the tx pool and the p2p client, which will need the l2 block source
     const p2pClient = await createP2PClient(
       config,
@@ -359,6 +367,7 @@ export class AztecNodeService implements AztecNode, AztecNodeAdmin, Traceable {
       peerProofVerifier,
       worldStateSynchronizer,
       epochCache,
+      globalVariableBuilder,
       packageVersion,
       dateProvider,
       telemetry,
@@ -484,17 +493,6 @@ export class AztecNodeService implements AztecNode, AztecNodeAdmin, Traceable {
         log.info(`All p2p services started`);
       })
       .catch(err => log.error('Failed to start p2p services after archiver sync', err));
-
-    const globalVariableBuilderConfig = {
-      l1Contracts: config.l1Contracts,
-      ethereumSlotDuration: config.ethereumSlotDuration,
-      rollupVersion: BigInt(config.rollupVersion),
-      l1GenesisTime,
-      slotDuration: Number(slotDuration),
-    };
-
-    const globalVariableBuilder = new GlobalVariableBuilder(dateProvider, publicClient, globalVariableBuilderConfig);
-    const feeProvider = new FeeProviderImpl(dateProvider, publicClient, globalVariableBuilderConfig);
 
     // Validator enabled, create/start relevant service
     let sequencer: SequencerClient | undefined;
