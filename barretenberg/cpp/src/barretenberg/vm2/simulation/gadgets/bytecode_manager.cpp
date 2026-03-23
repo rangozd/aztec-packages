@@ -54,7 +54,7 @@ BytecodeId TxBytecodeManager::get_bytecode(const AztecAddress& address)
             .bytecode_id = FF(0), // Use default ID for error cases
             .address = address,
             .current_class_id = FF(0), // Use default ID for error cases
-            .nullifier_root = tree_states.nullifier_tree.tree.root,
+            .nullifier_tree_root = tree_states.nullifier_tree.tree.root,
             .public_data_tree_root = tree_states.public_data_tree.tree.root,
             .retrieved_bytecodes_snapshot_before = before_snapshot,
             .retrieved_bytecodes_snapshot_after = before_snapshot,
@@ -78,7 +78,7 @@ BytecodeId TxBytecodeManager::get_bytecode(const AztecAddress& address)
             .bytecode_id = FF(0), // Use default ID for error cases
             .address = address,
             .current_class_id = current_class_id,
-            .nullifier_root = tree_states.nullifier_tree.tree.root,
+            .nullifier_tree_root = tree_states.nullifier_tree.tree.root,
             .public_data_tree_root = tree_states.public_data_tree.tree.root,
             .retrieved_bytecodes_snapshot_before = before_snapshot,
             .retrieved_bytecodes_snapshot_after = before_snapshot,
@@ -118,7 +118,7 @@ BytecodeId TxBytecodeManager::get_bytecode(const AztecAddress& address)
         .address = address,
         .current_class_id = current_class_id,
         .contract_class = klass,
-        .nullifier_root = tree_states.nullifier_tree.tree.root,
+        .nullifier_tree_root = tree_states.nullifier_tree.tree.root,
         .public_data_tree_root = tree_states.public_data_tree.tree.root,
         .retrieved_bytecodes_snapshot_before = before_snapshot,
         .retrieved_bytecodes_snapshot_after = snapshot_after,
