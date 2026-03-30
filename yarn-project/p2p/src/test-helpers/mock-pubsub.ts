@@ -3,6 +3,7 @@ import { type Logger, createLogger } from '@aztec/foundation/log';
 import type { AztecAsyncKVStore } from '@aztec/kv-store';
 import type { L2BlockSource } from '@aztec/stdlib/block';
 import type { ContractDataSource } from '@aztec/stdlib/contract';
+import type { BlockMinFeesProvider } from '@aztec/stdlib/gas';
 import type { ClientProtocolCircuitVerifier, WorldStateSynchronizer } from '@aztec/stdlib/interfaces/server';
 import type { TelemetryClient } from '@aztec/telemetry-client';
 
@@ -55,6 +56,7 @@ export function getMockPubSubP2PServiceFactory(
       proofVerifier: ClientProtocolCircuitVerifier;
       worldStateSynchronizer: WorldStateSynchronizer;
       peerStore: AztecAsyncKVStore;
+      blockMinFeesProvider: BlockMinFeesProvider;
       telemetry: TelemetryClient;
       logger: Logger;
     },
@@ -75,6 +77,7 @@ export function getMockPubSubP2PServiceFactory(
       deps.epochCache,
       deps.proofVerifier,
       deps.worldStateSynchronizer,
+      deps.blockMinFeesProvider,
       deps.telemetry,
       deps.logger,
     );
