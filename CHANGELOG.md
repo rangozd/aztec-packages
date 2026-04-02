@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.1.1](https://github.com/AztecProtocol/aztec-packages/compare/v4.1.0...v4.1.1) (2026-04-02)
+
+
+### Bug Fixes
+
+* **archiver:** handle duplicate checkpoint from L1 reorg (backport [#22252](https://github.com/AztecProtocol/aztec-packages/issues/22252)) ([#22257](https://github.com/AztecProtocol/aztec-packages/issues/22257)) ([af7324b](https://github.com/AztecProtocol/aztec-packages/commit/af7324b3ca89428ec237a6260612e1c5c9f3d7ed))
+* deploy-staging-public waits for any semver tag instead of release-please version ([#21984](https://github.com/AztecProtocol/aztec-packages/issues/21984)) ([0619f00](https://github.com/AztecProtocol/aztec-packages/commit/0619f00c8299f9833f7604589d53aa9f48c2bfad))
+* Fix blob encoding when uploaded from proposals ([#22045](https://github.com/AztecProtocol/aztec-packages/issues/22045)) ([db55b9c](https://github.com/AztecProtocol/aztec-packages/commit/db55b9c7c28c1578d8b41deaa410fbe4d89705d9))
+* fully validate txs retrieved from tx file store (backport [#21988](https://github.com/AztecProtocol/aztec-packages/issues/21988)) ([#21998](https://github.com/AztecProtocol/aztec-packages/issues/21998)) ([4f85101](https://github.com/AztecProtocol/aztec-packages/commit/4f85101c56ffa74dc642134c2f4d8ad5f7ace3cc))
+* resolve cherry-pick conflicts ([7fee115](https://github.com/AztecProtocol/aztec-packages/commit/7fee115f648dc2a21a383ec7f935e5f3693bdd1d))
+* run compatibility tests on all v4-related branches ([#22149](https://github.com/AztecProtocol/aztec-packages/issues/22149)) ([e696cf6](https://github.com/AztecProtocol/aztec-packages/commit/e696cf677877d88626834b117a19b7db06bef217))
+* run compatibility tests on all v4-related branches ([#22149](https://github.com/AztecProtocol/aztec-packages/issues/22149)) ([d8fa4c4](https://github.com/AztecProtocol/aztec-packages/commit/d8fa4c475de5ac2bbd5c5fef650d12928d8dab54))
+* verify accumulated pairing points in native ChonkVerifier ([30efbfe](https://github.com/AztecProtocol/aztec-packages/commit/30efbfe6d4526d2d66eaae892b07bffbb46a13c2))
+* verify accumulated pairing points in native ChonkVerifier (v4 backport) ([#21975](https://github.com/AztecProtocol/aztec-packages/issues/21975)) ([bef541f](https://github.com/AztecProtocol/aztec-packages/commit/bef541fb36a00504f79bd95a68f1b526e460e360))
+
 ## [4.0.4](https://github.com/AztecProtocol/aztec-packages/compare/v4.0.3...v4.0.4) (2026-02-27)
 
 
