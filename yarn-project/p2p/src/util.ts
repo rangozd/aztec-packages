@@ -106,13 +106,21 @@ function addressToMultiAddressType(address: string): 'ip4' | 'ip6' | 'dns' {
   }
 }
 
-export function configureP2PClientAddresses(_config: P2PConfig & DataStoreConfig): P2PConfig & DataStoreConfig {
+export async function configureP2PClientAddresses(
+  _config: P2PConfig & DataStoreConfig,
+): Promise<P2PConfig & DataStoreConfig> {
   const config = { ..._config };
-  const { p2pBroadcastPort, p2pPort } = config;
+  const { p2pIp, queryForIp, p2pBroadcastPort, p2pPort } = config;
 
   // If no broadcast port is provided, use the given p2p port as the broadcast port
   if (!p2pBroadcastPort) {
     config.p2pBroadcastPort = p2pPort;
+  }
+
+  // Resolve the initial public IP so the ENR and announce address are set at startup.
+  // If queryForIp is enabled, discv5 will also track IP changes at runtime via enrUpdate.
+  if (!p2pIp && queryForIp) {
+    config.p2pIp = await getPublicIp();
   }
 
   return config;
