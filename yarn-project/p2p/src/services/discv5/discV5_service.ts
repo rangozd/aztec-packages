@@ -97,7 +97,7 @@ export class DiscV5Service extends EventEmitter implements PeerDiscoveryService 
         requestTimeout: 2000,
         allowUnverifiedSessions: true,
         enrUpdate: config.queryForIp || !p2pIp,
-        pingInterval: config.queryForIp ? 10_000 : 300_000,
+        pingInterval: config.queryForIp ? 60_000 : 300_000,
         ...configOverrides.config,
       },
       metricsRegistry,
