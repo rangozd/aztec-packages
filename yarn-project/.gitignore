@@ -61,6 +61,8 @@ cli/src/config/generated
 ethereum/src/generated
 slasher/src/generated
 
+# Symlink created by noir-projects/protocol-fuzzer/setup-local.sh
+wallet-bridge.mjs
 .claude/settings.local.json
 .yarn/*
 !.yarn/patches
