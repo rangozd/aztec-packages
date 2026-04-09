@@ -53,6 +53,7 @@ export class DiscV5Service extends EventEmitter implements PeerDiscoveryService 
     configOverrides: Partial<IDiscv5CreateOptions> = {},
   ) {
     super();
+
     const { p2pIp, p2pPort, p2pBroadcastPort, bootstrapNodes, trustedPeers, privatePeers } = config;
 
     this.bootstrapNodeEnrs = bootstrapNodes.map(x => ENR.decodeTxt(x));
@@ -97,7 +98,8 @@ export class DiscV5Service extends EventEmitter implements PeerDiscoveryService 
         requestTimeout: 2000,
         allowUnverifiedSessions: true,
         enrUpdate: config.queryForIp || !p2pIp,
-        pingInterval: config.queryForIp ? 60_000 : 300_000,
+        pingInterval: config.queryForIp ? 10_000 : 300_000,
+        addrVotesToUpdateEnr: config.queryForIp ? 1 : 10,
         ...configOverrides.config,
       },
       metricsRegistry,
@@ -132,8 +134,14 @@ export class DiscV5Service extends EventEmitter implements PeerDiscoveryService 
     // We want to update our tcp port to match the udp port
     // p2pBroadcastPort is optional on config, however it is set to default within the p2p client factory
     const multiAddrTcp = multiaddr(convertToMultiaddr(address, this.config.p2pBroadcastPort!, 'tcp'));
+    const prevIp = this.enr.toENR().ip ?? 'none';
     this.enr.setLocationMultiaddr(multiAddrTcp);
-    this.logger.info('Multiaddr updated', { multiaddr: multiAddrTcp.toString() });
+    this.logger.info('Multiaddr updated via discv5 PONG vote', {
+      prevIp,
+      newIp: address,
+      multiaddr: multiAddrTcp.toString(),
+    });
+
     this.emit('ip:changed', address);
   }
 
@@ -204,11 +212,21 @@ export class DiscV5Service extends EventEmitter implements PeerDiscoveryService 
       await sleep(delayBeforeStart - msSinceStart);
     }
 
+    const kadBefore = this.discv5.kadValues().length;
     try {
       await this.discv5.findRandomNode();
     } catch (err) {
       this.logger.error(`Error running discV5 random node query: ${err}`);
     }
+    const kadAfter = this.discv5.kadValues().length;
+    const enr = this.enr.toENR();
+    this.logger.debug(`DiscV5 random node query complete`, {
+      kadBefore,
+      kadAfter,
+      enrIp: enr.ip ?? 'none',
+      enrUdp: enr.udp ?? 'none',
+      enrTcp: enr.tcp ?? 'none',
+    });
   }
 
   public getKadValues(): ENR[] {
@@ -247,7 +265,12 @@ export class DiscV5Service extends EventEmitter implements PeerDiscoveryService 
   private async onEnrAdded(enr: ENR) {
     const multiAddrTcp = await enr.getFullMultiaddr('tcp');
     const multiAddrUdp = await enr.getFullMultiaddr('udp');
-    this.logger.debug(`Added ENR ${enr.encodeTxt()}`, { multiAddrTcp, multiAddrUdp, nodeId: enr.nodeId });
+    this.logger.info(`DiscV5 ENR added (peer discovered via DHT)`, {
+      nodeId: enr.nodeId,
+      multiAddrTcp: multiAddrTcp?.toString() ?? 'none',
+      multiAddrUdp: multiAddrUdp?.toString() ?? 'none',
+      isBootnode: this.isOurBootnode(enr),
+    });
     this.onDiscovered(enr);
   }
 
@@ -280,7 +303,10 @@ export class DiscV5Service extends EventEmitter implements PeerDiscoveryService 
     // Check the peer is an aztec peer
     const value = enr.kvs.get(AZTEC_ENR_KEY);
     if (!value) {
-      this.logger.debug(`Peer node ${enr.nodeId} does not have aztec key in ENR`);
+      this.logger.info(`Discovered peer has no aztec key in ENR, ignoring`, {
+        nodeId: enr.nodeId,
+        enrIp: enr.ip ?? 'none',
+      });
       return false;
     }
 
@@ -292,7 +318,9 @@ export class DiscV5Service extends EventEmitter implements PeerDiscoveryService 
       return true;
     } catch (err: any) {
       if (err.name === 'ComponentsVersionsError') {
-        this.logger.debug(`Peer node ${enr.nodeId} has incorrect version: ${err.message}`, {
+        this.logger.info(`Discovered peer has wrong version, ignoring`, {
+          nodeId: enr.nodeId,
+          enrIp: enr.ip ?? 'none',
           compressedVersion,
           expected: this.versions,
         });

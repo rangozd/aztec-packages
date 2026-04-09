@@ -522,11 +522,14 @@ export class PeerManager implements PeerManagerInterface {
     const peersToConnect = this.config.maxPeerCount - healthyConnections.length - protectedPeerCount;
 
     const logLevel = this.heartbeatCounter % this.displayPeerCountsPeerHeartbeat === 0 ? 'info' : 'debug';
+    const kadValues = this.peerDiscoveryService.getKadValues();
     this.logger[logLevel](`Connected to ${healthyConnections.length + this.trustedPeers.size} peers`, {
       discoveredConnections: healthyConnections.length,
       protectedConnections: protectedPeerCount,
       maxPeerCount: this.config.maxPeerCount,
       cachedPeers: this.cachedPeers.size,
+      discv5KadPeers: kadValues.length,
+      discv5KadAddrs: kadValues.slice(0, 5).map(e => `${e.ip ?? 'no-ip'}:${e.udp ?? 'no-udp'}`),
       ...this.peerScoring.getStats(),
     });
 

@@ -64,6 +64,15 @@ export async function createP2PClient(
 
   const logger = deps.logger ?? createLogger('p2p');
 
+  logger.info('P2P client address config resolved', {
+    p2pIp: config.p2pIp ?? 'not set',
+    queryForIp: config.queryForIp,
+    p2pPort: config.p2pPort,
+    p2pBroadcastPort: config.p2pBroadcastPort,
+    listenAddress: config.listenAddress,
+    bootstrapNodeCount: config.bootstrapNodes.length,
+  });
+
   if (config.bootstrapNodes.length === 0) {
     logger.warn(
       'No bootstrap nodes have been provided. Set the BOOTSTRAP_NODES environment variable in order to join the P2P network',
