@@ -1,9 +1,5 @@
 # aztec-nr Development Guidelines
 
-## Aztec Rules
-
-If you haven't already, read every file in `.claude/aztec-rules/` (path relative to git root). These are cross-cutting rules that apply to all components.
-
 ## Formatting
 
 - Lines should not exceed 120 characters, especially in comments.

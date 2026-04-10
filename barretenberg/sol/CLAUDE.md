@@ -1,9 +1,5 @@
 # Barretenberg Solidity Verifier - Development Guide
 
-## Aztec Rules
-
-If you haven't already, read every file in `.claude/aztec-rules/` (path relative to git root). These are cross-cutting rules that apply to all components.
-
 ## Overview
 
 This directory contains the Solidity implementation of the Honk verifier for on-chain proof verification.

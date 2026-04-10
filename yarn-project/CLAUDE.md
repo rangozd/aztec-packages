@@ -1,9 +1,5 @@
 # Aztec TypeScript Monorepo Development Guide
 
-## Aztec Rules
-
-If you haven't already, read every file in `.claude/aztec-rules/` (path relative to git root). These are cross-cutting rules that apply to all components.
-
 ## Overview
 
 Aztec is a privacy-first Layer 2 zk-rollup on Ethereum that supports smart contracts with both private and public state and execution.

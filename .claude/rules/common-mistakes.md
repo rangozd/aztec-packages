@@ -11,7 +11,7 @@ These are real errors observed across many sessions. Read carefully — they sav
 - If `noir/noir-repo` shows as modified, run `git submodule update noir/noir-repo`
 
 ## Code Style
-- TypeScript: 120 character line width (not 80). Use yarn format before committing. 
+- TypeScript: 120 character line width (not 80). Use `yarn format` before committing.
 - C++: format with `clang-format-20 -i <files>` before committing
 - Noir: max 120 characters per line, use `panic!()` not `assert()` for unreachable code.
-- Rust: use any formatting commands before committing. 
+- Rust: run `cargo fmt` before committing.

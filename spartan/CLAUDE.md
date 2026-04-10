@@ -1,9 +1,5 @@
 # Spartan Deployment Infrastructure
 
-## Aztec Rules
-
-If you haven't already, read every file in `.claude/aztec-rules/` (path relative to git root). These are cross-cutting rules that apply to all components.
-
 This directory contains the infrastructure-as-code for deploying Aztec networks on Kubernetes.
 
 ## Directory Structure

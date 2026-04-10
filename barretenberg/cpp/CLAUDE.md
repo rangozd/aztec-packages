@@ -2,10 +2,6 @@
 
 The core proving system library.
 
-## Aztec Rules
-
-If you haven't already, read every file in `.claude/aztec-rules/` (path relative to git root). These are cross-cutting rules that apply to all components.
-
 Bootstrap modes:
 
 - `./bootstrap.sh` => full build, needed for other components
