@@ -5,22 +5,15 @@ These are real errors observed across many sessions. Read carefully — they sav
 ## Build System
 - Do NOT add `-j` flag to ninja — default parallelism is optimal
 - Do NOT run `yarn build` from the repo root — run from `yarn-project/`
-- After changing barretenberg C++, rebuild downstream: `bb -> bb/ts -> noir -> yarn-project`
-- Check AVM build state with `grep "AVM:" build/CMakeCache.txt` — AVM=ON persists across builds
+- After changing barretenberg C++, rebuild downstream: `bb → bb/ts → noir → yarn-project`
+- Check AVM build state with `grep "AVM:" barretenberg/cpp/build/CMakeCache.txt` — AVM=ON persists across builds
 - Docker is NOT available in all environments (including ClaudeBox). Do not attempt Docker commands.
 
 ## Proof Size Constants
 - After any change affecting proof sizes, you MUST update three places:
-  1. C++ static_asserts in `dsl/acir_format/mock_verifier_inputs.test.cpp`
+  1. C++ static_asserts in `barretenberg/cpp/src/barretenberg/dsl/acir_format/mock_verifier_inputs.test.cpp`
   2. Noir constants in `noir-projects/noir-protocol-circuits/crates/types/src/constants.nr`
-  3. TypeScript: run `yarn remake-constants` from `yarn-project/constants`
-
-## Git Workflow
-- Default PR base branch is `next`, NOT `master`
-- Barretenberg PRs target `merge-train/barretenberg`
-- AVM PRs target `merge-train/avm`
-- Always `git fetch` before creating branches to avoid stale bases
-- If `noir/noir-repo` shows as modified, run `git submodule update noir/noir-repo`
+  3. TypeScript: run `yarn remake-constants` from `yarn-project/constants/`
 
 ## Testing
 - Never run multiple e2e tests in parallel — they compete for ports

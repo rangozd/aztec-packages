@@ -8,34 +8,32 @@ If the user accepts, perform the analysis below.
 
 ## Finding the Session JSONL
 
-Claude Code stores session logs as JSONL files. To find the current session's log:
+Claude Code stores session logs as JSONL files under `~/.claude/projects/`. The project path is encoded by replacing `/` with `-`. To find the current session's log:
 
 ```bash
-# Find the most recently modified JSONL in the project's .claude directory
-# The project path is encoded with dashes replacing slashes
-PROJECT_DIR=$(pwd | sed 's|/|-|g; s|^-||')
-find ~/.claude/projects/ -maxdepth 2 -name "*.jsonl" -not -path "*/subagents/*" \
-  -newer /tmp/.session_start 2>/dev/null | head -5
-
-# If that doesn't work, find the most recently written JSONL across all projects
+# Find the most recently written JSONL across all projects (most reliable)
 find ~/.claude/projects/ -maxdepth 2 -name "*.jsonl" -not -path "*/subagents/*" \
   -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -5
 ```
+
+Pick the file matching this project's encoded path (e.g., a project at `/home/user/aztec-packages` becomes `-home-user-aztec-packages`).
 
 ## What to Look For
 
 Grep the JSONL for patterns that indicate wasted work:
 
 ```bash
-# Errors and failures
-grep -i '"error"' <session.jsonl> | head -20
-grep -i 'permission denied\|command not found\|ENOENT\|No such file' <session.jsonl> | head -10
+SESSION_JSONL="<path from above>"
 
-# Tool call failures (retried commands)
-grep '"tool_use"' <session.jsonl> | grep -i 'error\|failed\|denied' | head -10
+# Permission blocks and errors (most common waste)
+grep -c 'sensitive file' "$SESSION_JSONL"
+grep -c 'is_error.*true' "$SESSION_JSONL"
 
-# Count retries on similar commands
-grep '"tool_use"' <session.jsonl> | jq -r '.content[]?.name // empty' 2>/dev/null | sort | uniq -c | sort -rn | head -10
+# Specific error types
+grep -i 'permission denied\|command not found\|No such file\|ENOENT' "$SESSION_JSONL" | wc -l
+
+# Failed tool calls — look for error results
+grep '"is_error":true' "$SESSION_JSONL" | grep -oP '"content":"[^"]{0,200}' | head -10
 ```
 
 ## Output Format

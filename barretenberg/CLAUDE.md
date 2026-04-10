@@ -1,12 +1,8 @@
 THE PROJECT ROOT IS AT ONE LEVEL ABOVE THIS FOLDER. Typically, the repository is at ~/aztec-packages. All advice is from the root.
 
-## Aztec Rules (apply to all components)
+## Aztec Rules (apply to all components — read these first)
 
-Read `.claude/aztec-rules/` at the repo root. Key points:
-- **Red/green testing**: Show a failing test before fixing. Red then green.
-- **Attribution**: Attribute work to the git author only. No `Co-Authored-By: Claude` lines.
-- **Common mistakes**: Don't use `ninja -j`, check AVM build state, update proof size constants in 3 places.
-- **Session analysis**: At end of task, offer to analyze the session JSONL for errors and improvements.
+Read every file in `.claude/aztec-rules/` (path relative to git root). These contain cross-cutting rules: monorepo structure, common mistakes, git workflow, red/green testing, attribution, and session analysis.
 
 # Git workflow for barretenberg
 
