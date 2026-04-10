@@ -142,9 +142,11 @@ jobs:
           fi
           echo "AZTEC_DOCKER_IMAGE=$AZTEC_DOCKER_IMAGE" >> $GITHUB_ENV
 
-          # Derive prover agent image by replacing /aztec: with /aztec-prover-agent:
-          PROVER_AGENT_DOCKER_IMAGE="${AZTEC_DOCKER_IMAGE/\/aztec:/\/aztec-prover-agent:}"
-          echo "PROVER_AGENT_DOCKER_IMAGE=$PROVER_AGENT_DOCKER_IMAGE" >> $GITHUB_ENV
+          # Only use the separate prover-agent image for official semver builds;
+          # for custom images, let the deploy script fall back to AZTEC_DOCKER_IMAGE
+          if [[ -n "${{ inputs.semver }}" ]]; then
+            echo "PROVER_AGENT_DOCKER_IMAGE=aztecprotocol/aztec-prover-agent:${{ inputs.semver }}" >> $GITHUB_ENV
+          fi
 
       - name: Store the GCP key in a file
         env:
@@ -194,7 +196,7 @@ jobs:
           NAMESPACE: ${{ inputs.namespace }}
           AZTEC_DOCKER_IMAGE: ${{ env.AZTEC_DOCKER_IMAGE }}
           CREATE_ROLLUP_CONTRACTS: ${{ inputs.deploy_contracts == true && 'true' || '' }}
-          PROVER_AGENT_DOCKER_IMAGE: ${{ env.PROVER_AGENT_DOCKER_IMAGE }}
+          PROVER_AGENT_DOCKER_IMAGE: ${{ env.PROVER_AGENT_DOCKER_IMAGE || env.AZTEC_DOCKER_IMAGE }}
           VALIDATOR_HA_DOCKER_IMAGE: ${{ inputs.ha_docker_image || '' }}
         run: |
           echo "Deploying network: ${{ inputs.network }}"
