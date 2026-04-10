@@ -80,19 +80,32 @@ export class BootstrapNode implements P2PBootstrapApi {
       metricsRegistry,
     });
 
+    // Override onEstablished to seed the routing table with addressless ENRs.
+    // When a peer connects with an empty ENR (no IP, waiting for PONG-based IP
+    // discovery), the default handler skips routing table insertion. By seeding
+    // the entry via addEnr(), handlePing will later detect the stale seq and
+    // request the updated ENR, which discovered() then applies to the table.
+    const origOnEstablished = this.node.onEstablished.bind(this.node);
+    this.node.onEstablished = (...args: unknown[]) => {
+      origOnEstablished(...args);
+      const enr = args[1] as ENR;
+      const verified = args[3] as boolean;
+      if (verified && !enr.getLocationMultiaddr('udp')) {
+        this.logger.verbose('Seeding addressless peer into routing table for future ENR updates', {
+          nodeId: enr.nodeId,
+        });
+        this.node!.addEnr(enr);
+      }
+    };
+
     this.node.on('multiaddrUpdated', (addr: Multiaddr) => {
       this.logger.info('Advertised socket address updated', { addr: addr.toString() });
     });
     this.node.on('discovered', async (enr: SignableENR) => {
       const addr = await enr.getFullMultiaddr('udp');
       this.logger.verbose(`Discovered new peer`, { enr: enr.encodeTxt(), addr: addr?.toString() });
-      // discv5's discovered() only updates routing table entries that already exist. Nodes that
-      // established a session with an empty-IP ENR are never inserted, so even after their ENR
-      // gains a valid socket address the routing table stays empty and FINDNODE always returns 0
-      // peers. Calling addEnr() here does an insertOrUpdate regardless of prior state, fixing
-      // the routing table so these nodes become discoverable to other peers.
       if (addr) {
-        this.node.addEnr(enr);
+        this.node!.addEnr(enr);
       }
     });
 
