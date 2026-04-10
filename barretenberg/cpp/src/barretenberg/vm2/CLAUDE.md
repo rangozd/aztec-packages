@@ -1,8 +1,8 @@
 # AVM development guide (C++)
 
-## Aztec Rules (apply to all components — read these first)
+## Aztec Rules
 
-Read every file in `.claude/aztec-rules/` (path relative to git root). These contain cross-cutting rules: monorepo structure, common mistakes, git workflow, red/green testing, attribution, and session analysis.
+If you haven't already, read every file in `.claude/aztec-rules/` (path relative to git root). These are cross-cutting rules that apply to all components.
 
 **Scope:** Use this guide when working in `barretenberg/cpp/src/barretenberg/vm2` — the AVM C++ simulator, trace generation, and prover. For barretenberg-wide build and workflow, see `barretenberg/cpp/CLAUDE.md`. For PIL relation sources and codegen, see `barretenberg/cpp/pil/vm2/CLAUDE.md`.
 

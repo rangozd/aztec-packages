@@ -1,8 +1,8 @@
 # Barretenberg Solidity Verifier - Development Guide
 
-## Aztec Rules (apply to all components — read these first)
+## Aztec Rules
 
-Read every file in `.claude/aztec-rules/` (path relative to git root). These contain cross-cutting rules: monorepo structure, common mistakes, git workflow, red/green testing, attribution, and session analysis.
+If you haven't already, read every file in `.claude/aztec-rules/` (path relative to git root). These are cross-cutting rules that apply to all components.
 
 ## Overview
 
