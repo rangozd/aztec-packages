@@ -1,5 +1,13 @@
 THE PROJECT ROOT IS AT ONE LEVEL ABOVE THIS FOLDER. Typically, the repository is at ~/aztec-packages. All advice is from the root.
 
+## Aztec Rules (apply to all components)
+
+Read `.claude/aztec-rules/` at the repo root. Key points:
+- **Red/green testing**: Show a failing test before fixing. Red then green.
+- **Attribution**: Attribute work to the git author only. No `Co-Authored-By: Claude` lines.
+- **Common mistakes**: Don't use `ninja -j`, check AVM build state, update proof size constants in 3 places.
+- **Session analysis**: At end of task, offer to analyze the session JSONL for errors and improvements.
+
 # Git workflow for barretenberg
 
 **IMPORTANT**: When comparing branches or looking at diffs for barretenberg work, use `origin/merge-train/barretenberg` as the base branch, NOT `master` or `next`. Create new branches off `origin/merge-train/barretenberg` and target PRs to `merge-train/barretenberg`.

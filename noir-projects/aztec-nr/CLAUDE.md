@@ -1,5 +1,9 @@
 # aztec-nr Development Guidelines
 
+## Aztec Rules (apply to all components)
+
+Read `.claude/aztec-rules/` at the repo root. Key points: red/green testing (show failing test first), attribute work to git author only (no Claude co-author lines), offer session analysis at end of task. See `.claude/aztec-rules/common-mistakes.md` for build gotchas.
+
 ## Formatting
 
 - Lines should not exceed 120 characters, especially in comments.

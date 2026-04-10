@@ -1,5 +1,9 @@
 # AVM relations and PIL development guide
 
+## Aztec Rules (apply to all components)
+
+Read `.claude/aztec-rules/` at the repo root. Key points: red/green testing (show failing test first), attribute work to git author only (no Claude co-author lines), offer session analysis at end of task. See `.claude/aztec-rules/common-mistakes.md` for build gotchas.
+
 **Scope:** Use this guide when editing PIL relation files in `barretenberg/cpp/pil/vm2`. After changing PIL you must regenerate C++ and recompile; the C++ side is in `barretenberg/cpp/src/barretenberg/vm2`. See that directory’s CLAUDE.md for build and test.
 
 ## Related rules

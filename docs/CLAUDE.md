@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Aztec Rules (apply to all components)
+
+Read `.claude/aztec-rules/` at the repo root. Key points: red/green testing (show failing test first), attribute work to git author only (no Claude co-author lines), offer session analysis at end of task. See `.claude/aztec-rules/common-mistakes.md` for build gotchas.
+
 ## Overview
 
 You are working with the **Aztec Protocol Documentation** - a comprehensive documentation site built with Docusaurus 3 for a privacy-centric zkRollup solution for Ethereum. Your role includes both technical development tasks and ensuring all documentation meets quality standards for accuracy, clarity, and usability.

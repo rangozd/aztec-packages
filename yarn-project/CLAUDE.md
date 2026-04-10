@@ -1,5 +1,9 @@
 # Aztec TypeScript Monorepo Development Guide
 
+## Aztec Rules (apply to all components)
+
+Read `.claude/aztec-rules/` at the repo root. Key points: red/green testing (show failing test first), attribute work to git author only (no Claude co-author lines), offer session analysis at end of task. See `.claude/aztec-rules/common-mistakes.md` for build gotchas.
+
 ## Overview
 
 Aztec is a privacy-first Layer 2 zk-rollup on Ethereum that supports smart contracts with both private and public state and execution.
